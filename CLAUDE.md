@@ -18,7 +18,7 @@ cat changelog/$(ls changelog | tail -1)   # 上次会话发生了什么
    `git status`。这个仓库是公开的。
 
 2. **往 `src/pipeline.js` 加 `cv.xxx()` 必须同步加白名单**
-   （`tools/opencv_js.flatpage.config.py`）并重新编译 OpenCV。漏了不会构建失败，
+   （`tools/opencv_js.leaf.config.py`）并重新编译 OpenCV。漏了不会构建失败，
    而是**运行时**才炸 —— 表现为一个 toast，主线程 console 里什么都没有。
 
 3. **`vendor/opencv/*` 是打过补丁的产物，不要手动改，也不要直接从编译目录复制。**
@@ -67,7 +67,7 @@ python3 tools/measure-residual.py <导出的成品>   # 残余弯曲超过 3px �
 子路径部署（GitHub Pages）要带 base 校验：
 
 ```bash
-npm run build:pages && npm run verify -- /flatpage/
+npm run build:pages && npm run verify -- /leaf/
 ```
 
 外加规矩 5 的浏览器端到端验证 —— 这一条没有脚本能替，必须真的跑一遍。
@@ -94,5 +94,5 @@ caches 后再离线导航，必须得到 `ERR_INTERNET_DISCONNECTED`。
 
 ## 待办
 
-- 域名未绑：canonical 已写死 `flat.bybrowser.com`（子域，绑定中）。
+- 域名未绑：canonical 已写死 `leaf.chaxus.com`（子域，绑定中）。
 - 无边框文档的自动检测不可靠，退回手动拖角点时缺少引导。

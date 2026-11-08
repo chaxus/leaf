@@ -2,7 +2,7 @@
 # 编译 FlatPage 专用的精简 OpenCV wasm。
 #
 # 上游 @techstark/opencv-js 是全模块 build，12.7MB wasm。我们只要 core+imgproc
-# 里的十几个函数，白名单见 opencv_js.flatpage.config.py。
+# 里的十几个函数，白名单见 opencv_js.leaf.config.py。
 #
 # 需要：emscripten (brew install emscripten)、cmake、python3
 # 用法：bash tools/build-opencv.sh [opencv 源码目录]
@@ -33,7 +33,7 @@ echo "== 输出:       $OUT"
 python3 "$SRC/platforms/js/build_js.py" "$BUILD" \
   --build_wasm \
   --disable_single_file \
-  --config "$HERE/opencv_js.flatpage.config.py" \
+  --config "$HERE/opencv_js.leaf.config.py" \
   --emscripten_dir "$EMDIR" \
   --cmake_option="-DCMAKE_CXX_STANDARD=17"
 

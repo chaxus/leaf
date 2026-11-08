@@ -56,7 +56,7 @@ self.addEventListener('fetch', (e: FetchEvent) => {
     e.respondWith(
       (async (): Promise<Response> => {
         const m = await manifest().catch(() => null);
-        const cacheName = m?.cache ?? 'flatpage';
+        const cacheName = m?.cache ?? 'leaf';
         const res = await networkFirst(req, { cacheName });
         if (res.status !== 408) return res;
         // 离线，且这个 URL 从没缓存过（带 query 的链接等）：退回首页壳，
@@ -72,7 +72,7 @@ self.addEventListener('fetch', (e: FetchEvent) => {
     e.respondWith(
       (async (): Promise<Response> => {
         const m = await manifest().catch(() => null);
-        return cacheFirst(req, { cacheName: m?.cache ?? 'flatpage' });
+        return cacheFirst(req, { cacheName: m?.cache ?? 'leaf' });
       })(),
     );
   }

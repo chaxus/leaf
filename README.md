@@ -1,9 +1,9 @@
-# FlatPage
+# Leaf
 
 Flatten curved photos of documents — entirely in your browser.
 
 Photograph a booklet, a bound book or an ID page and you get back a warped,
-shadowed, trapezoid image. FlatPage turns it into a flat, cropped, evenly-lit
+shadowed, trapezoid image. Leaf turns it into a flat, cropped, evenly-lit
 scan. **Nothing is uploaded.** There is no server to upload to: the image is
 decoded and processed by WebAssembly inside your tab, and the whole thing works
 with the network switched off.
@@ -21,7 +21,7 @@ Four stages, in order:
    the tilt.
 3. **Straighten the curve** — this is the part most tools skip. A four-point
    transform cannot undo the bend near a book's spine, because that bend is not
-   a plane. FlatPage measures how far each ruled line or table border actually
+   a plane. Leaf measures how far each ruled line or table border actually
    deviates from straight, builds a displacement field from it, and remaps.
 4. **Even out the lighting** — a greyscale closing estimates the paper's own
    brightness across the page; dividing by it removes shadows and gradients.
@@ -37,7 +37,7 @@ borders, before and after:
 | | size | line deviation (mean / max) |
 |---|---|---|
 | original photo | 3024×4032 | **36.8px / 59.5px** |
-| after FlatPage | 2690×2036 | **0.9px / 1.0px** |
+| after Leaf | 2690×2036 | **0.9px / 1.0px** |
 
 Sub-pixel. The reference implementation in `tools/dewarp.py` produces the same
 numbers, and is what the browser port is checked against.
@@ -53,14 +53,14 @@ deviation you measure in them is the deformation, not an estimate of it. For
 tables, forms, ID booklets and ruled paper, this beats the learned models —
 without shipping a few hundred megabytes of weights to the browser.
 
-For unruled prose the learned models remain the better tool; FlatPage falls back
+For unruled prose the learned models remain the better tool; Leaf falls back
 to plain perspective correction there.
 
 ## Size
 
 The OpenCV build shipped here is compiled specifically for this tool. Upstream
 `opencv.js` builds bundle `dnn`, `objdetect`, `features2d`, `calib3d`, `photo`,
-`video` and `ml`; FlatPage calls seventeen functions across `core` and
+`video` and `ml`; Leaf calls seventeen functions across `core` and
 `imgproc`. Whitelisting only those and letting the linker drop the rest:
 
 | | uncompressed | over the wire |
@@ -89,7 +89,7 @@ git clone --depth 1 --branch 4.x https://github.com/opencv/opencv.git
 bash tools/build-opencv.sh path/to/opencv
 ```
 
-The whitelist lives in `tools/opencv_js.flatpage.config.py`. Adding an OpenCV
+The whitelist lives in `tools/opencv_js.leaf.config.py`. Adding an OpenCV
 call to `src/pipeline.js` means adding it there too, or it will be missing at
 runtime.
 
@@ -122,12 +122,12 @@ MIT
 
 ---
 
-# FlatPage 拍平
+# Leaf 拍平
 
 把拍弯的文档照片拉平 —— 全程在你的浏览器里完成。
 
 拍一本户口本、一页装订的书、一张证件，得到的总是扭曲、带阴影、梯形的图。
-FlatPage 把它变成裁切好、无阴影、不扭曲的扫描件。**没有上传**：这里没有
+Leaf 把它变成裁切好、无阴影、不扭曲的扫描件。**没有上传**：这里没有
 可上传的服务器，图片由标签页内的 WebAssembly 解码和处理，关掉网络照样能用。
 
 这一点才是重点。人们会拿护照、身份证、户口本这类东西来用这种工具。这些文件
@@ -141,7 +141,7 @@ FlatPage 把它变成裁切好、无阴影、不扭曲的扫描件。**没有上
    而不是纸张边缘，比找纸边可靠。
 2. **透视校正** —— 四点变换，修梯形和倾斜。
 3. **拉直弯曲** —— 这是多数工具跳过的一步。四点变换消不掉靠近书脊的弯曲，
-   因为那不是一个平面。FlatPage 实测每条格线/表格框线偏离水平多少，据此构建
+   因为那不是一个平面。Leaf 实测每条格线/表格框线偏离水平多少，据此构建
    位移场再 remap 回去。
 4. **拉平光照** —— 用灰度闭运算估出纸张自身的亮度分布，除掉它就去掉了阴影和
    光照梯度。只动 LAB 的 L 通道，红色印章原样保留。刻意不做二值化 —— 那会毁掉
@@ -154,7 +154,7 @@ FlatPage 把它变成裁切好、无阴影、不扭曲的扫描件。**没有上
 | | 尺寸 | 横线起伏（平均 / 最大） |
 |---|---|---|
 | 原始照片 | 3024×4032 | **36.8px / 59.5px** |
-| FlatPage 处理后 | 2690×2036 | **0.9px / 1.0px** |
+| Leaf 处理后 | 2690×2036 | **0.9px / 1.0px** |
 
 亚像素级。`tools/dewarp.py` 里的参考实现给出相同的数字，浏览器版以它为基准校验。
 
@@ -168,13 +168,13 @@ FlatPage 把它变成裁切好、无阴影、不扭曲的扫描件。**没有上
 不是对形变的估计。对表格、表单、证件本、横格纸，这比学习模型更准，而且不用往
 浏览器里塞几百 MB 的权重。
 
-对没有格线的纯段落文字，学习模型仍然更强；FlatPage 在那种情况下退回到纯透视校正。
+对没有格线的纯段落文字，学习模型仍然更强；Leaf 在那种情况下退回到纯透视校正。
 
 ## 体积
 
 这里带的 OpenCV 是为这个工具单独编译的。上游 `opencv.js` 会把 `dnn`、
 `objdetect`、`features2d`、`calib3d`、`photo`、`video`、`ml` 全编进去，
-而 FlatPage 只调用 `core` 和 `imgproc` 里的十七个函数。只白名单这些、
+而 Leaf 只调用 `core` 和 `imgproc` 里的十七个函数。只白名单这些、
 让链接器丢掉其余：
 
 | | 未压缩 | 实际传输 |
@@ -196,7 +196,7 @@ git clone --depth 1 --branch 4.x https://github.com/opencv/opencv.git
 bash tools/build-opencv.sh path/to/opencv
 ```
 
-白名单在 `tools/opencv_js.flatpage.config.py`。往 `src/pipeline.js` 里加新的
+白名单在 `tools/opencv_js.leaf.config.py`。往 `src/pipeline.js` 里加新的
 OpenCV 调用时必须同步加进白名单，否则运行时会找不到那个函数。
 
 改了管线之后用客观指标验证，不要看截图 —— 1px 和 3px 的残余弯曲肉眼一样：

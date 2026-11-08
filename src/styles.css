@@ -1,4 +1,4 @@
-/* FlatPage — 建立在 ranui 的设计 token 之上（Geist 单色）。
+/* Leaf — 建立在 ranui 的设计 token 之上（Geist 单色）。
  *
  * 这里不再自己定义调色板和暗色规则：颜色、间距、圆角、阴影、字号全部来自
  * `ranui/style` 的 --ran-* token，明暗切换由 `ranui/theme` 的 initTheme 统一管。

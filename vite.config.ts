@@ -1,13 +1,13 @@
 import { defineConfig, type Plugin } from 'vite';
 import { MESSAGES, LOCALES, type Locale, type Messages } from './src/i18n';
 
-// 部署目标可配置：GitHub Pages 挂在 /flatpage/ 子路径，自定义域名挂在根路径。
+// 部署目标可配置：GitHub Pages 挂在 /leaf/ 子路径，自定义域名挂在根路径。
 // 写死任何一个都会让另一个的资源路径和 canonical 全部错位。
-const BASE = process.env.FLATPAGE_BASE || '/';
-const ORIGIN = (process.env.FLATPAGE_ORIGIN || 'https://flat.bybrowser.com').replace(/\/$/, '');
+const BASE = process.env.LEAF_BASE || '/';
+const ORIGIN = (process.env.LEAF_ORIGIN || 'https://leaf.chaxus.com').replace(/\/$/, '');
 // 同样内容部署在多处时，只有正式入口该被索引；其余（GitHub Pages 的演示页）
 // 必须 noindex，否则两边 canonical 各指自己，是重复内容、互相稀释。
-const NOINDEX = process.env.FLATPAGE_NOINDEX === '1';
+const NOINDEX = process.env.LEAF_NOINDEX === '1';
 const PATH: Record<Locale, string> = { en: BASE, zh: `${BASE}zh/` };
 const urlOf = (lang: Locale): string => ORIGIN + PATH[lang];
 
@@ -20,7 +20,7 @@ const urlOf = (lang: Locale): string => ORIGIN + PATH[lang];
  */
 function renderI18n(): Plugin {
   return {
-    name: 'flatpage-i18n-prerender',
+    name: 'leaf-i18n-prerender',
     apply: 'build',
     enforce: 'post',
     generateBundle(_opts, bundle) {
@@ -86,7 +86,7 @@ function renderI18n(): Plugin {
 
 function seoFiles(): Plugin {
   return {
-    name: 'flatpage-seo-files',
+    name: 'leaf-seo-files',
     apply: 'build',
     generateBundle() {
       const now = new Date().toISOString().slice(0, 10);
@@ -123,7 +123,7 @@ ${urls}
 function offlineSupport(): Plugin {
   let swRef = '';
   return {
-    name: 'flatpage-offline',
+    name: 'leaf-offline',
     apply: 'build',
     enforce: 'post',
 
@@ -150,7 +150,7 @@ function offlineSupport(): Plugin {
       const version = Object.keys(bundle).filter((n) => !n.endsWith('.html')).sort().join('|');
       let h = 0;
       for (let i = 0; i < version.length; i++) h = (h * 31 + version.charCodeAt(i)) | 0;
-      const cache = `flatpage-${(h >>> 0).toString(36)}`;
+      const cache = `leaf-${(h >>> 0).toString(36)}`;
 
       // 清单单独出一份：打包完成才知道最终文件名，SW 运行时读它
       this.emitFile({
@@ -160,7 +160,7 @@ function offlineSupport(): Plugin {
       });
 
       this.emitFile({ type: 'asset', fileName: 'manifest.webmanifest', source: JSON.stringify({
-        name: 'FlatPage', short_name: 'FlatPage',
+        name: 'Leaf', short_name: 'Leaf',
         description: 'Flatten curved photos of documents, entirely in your browser.',
         start_url: BASE, scope: BASE, display: 'standalone',
         background_color: '#ffffff', theme_color: '#0a0a0a',
@@ -173,7 +173,7 @@ function offlineSupport(): Plugin {
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="robots" content="noindex">
-<title>Not found — FlatPage</title>
+<title>Not found — Leaf</title>
 <style>body{font:15px/1.6 -apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
 margin:0;min-height:100vh;display:grid;place-items:center;background:#fff;color:#0a0a0a;text-align:center}
 @media(prefers-color-scheme:dark){body{background:#0a0a0a;color:#ededed}}
@@ -182,7 +182,7 @@ p{color:#666;margin:0 0 20px}@media(prefers-color-scheme:dark){p{color:#a1a1a1}}
 </head><body><main>
 <h1>404</h1>
 <p>This page does not exist.<br>此页面不存在。</p>
-<a href="${BASE}">FlatPage</a> · <a href="${BASE}zh/">中文</a>
+<a href="${BASE}">Leaf</a> · <a href="${BASE}zh/">中文</a>
 </main></body></html>
 ` });
 

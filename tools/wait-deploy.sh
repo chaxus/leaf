@@ -5,7 +5,7 @@
 # 页面拿到 404 的样式表（MIME 是 text/html，被浏览器拒绝）。实测踩过。
 # 这里把 HTML 里引用的所有本站资源都查一遍。
 set -euo pipefail
-URL="${1:-https://flat.bybrowser.com}"
+URL="${1:-https://leaf.chaxus.com}"
 DEADLINE=$(( $(date +%s) + 180 ))
 
 while :; do

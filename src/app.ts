@@ -1,5 +1,5 @@
 /**
- * FlatPage — 主界面逻辑。
+ * Leaf — 主界面逻辑。
  * 所有 OpenCV 运算在 worker 里；这里只负责画面、拖拽和导出。
  */
 import 'ranui/button';
@@ -120,7 +120,7 @@ $('langBtn').onclick = (e: MouseEvent): void => {
   if ($('langBtn').tagName === 'A') return;
   e.preventDefault();
   const next: Locale = i18n.locale === 'zh' ? 'en' : 'zh';
-  localStorage.setItem('flatpage.lang', next);
+  localStorage.setItem('leaf.lang', next);
   i18n.setLocale(next);
 };
 i18n.onChange(() => applyLang());
@@ -129,7 +129,7 @@ applyLang();
 /* ---------------- toast ---------------- */
 let toastTimer: ReturnType<typeof setTimeout> | undefined;
 function toast(msg: string): void {
-  console.debug('[flatpage] toast:', msg);   // toast 只显示 3.6s，留一条给排查用
+  console.debug('[leaf] toast:', msg);   // toast 只显示 3.6s，留一条给排查用
   const el = $('toast');
   el.textContent = msg;
   el.hidden = false;
@@ -574,7 +574,7 @@ function paint(canvas: HTMLCanvasElement, imageData: ImageData): void {
 }
 
 /* ---------------- print layout ---------------- */
-let layoutId = localStorage.getItem('flatpage.layout') || 'none';
+let layoutId = localStorage.getItem('leaf.layout') || 'none';
 
 function renderLayoutOpts(): void {
   const box = $('layoutOpts');
@@ -586,7 +586,7 @@ function renderLayoutOpts(): void {
     b.innerHTML = layoutIcon(l) + `<span>${t(`layout.${l.id}` as keyof Messages)}</span>`;
     b.onclick = () => {
       layoutId = l.id;
-      localStorage.setItem('flatpage.layout', layoutId);
+      localStorage.setItem('leaf.layout', layoutId);
       renderLayoutOpts();
       updateSheetCount();
       updateModeUI();
@@ -866,7 +866,7 @@ $('dlAllBtn').onclick = async () => {
     const composed = layoutById(layoutId).page;
     for (let i = 0; i < sheets.length; i++) {
       const blob = await toJpegBlob(sheets[i]!);
-      const name = composed ? `flatpage_${layoutId}_${i + 1}` : `${docs[i]?.name ?? 'page'}_flat`;
+      const name = composed ? `leaf_${layoutId}_${i + 1}` : `${docs[i]?.name ?? 'page'}_flat`;
       saveBlob(blob, `${name}.jpg`);
       if (i < sheets.length - 1) await new Promise((r) => setTimeout(r, 350));
     }
@@ -894,7 +894,7 @@ $('pdfBtn').onclick = async () => {
     for (const c of sheets) {
       pages.push({ jpeg: await canvasToJpegBytes(c), width: c.width, height: c.height });
     }
-    saveBlob(buildPdf(pages), 'flatpage.pdf');
+    saveBlob(buildPdf(pages), 'leaf.pdf');
   } catch (e) {
     toast(e instanceof Error ? e.message : String(e));
     console.error(e);

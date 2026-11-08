@@ -1,5 +1,5 @@
 {
-  "name": "dewarp-web",
+  "name": "leaf",
   "private": true,
   "type": "module",
   "scripts": {
@@ -7,7 +7,7 @@
     "build": "tsc --noEmit -p tsconfig.json && vite build",
     "preview": "vite preview",
     "verify": "python3 tools/verify-dist.py dist",
-    "build:pages": "FLATPAGE_BASE=/flatpage/ FLATPAGE_ORIGIN=https://chaxus.github.io FLATPAGE_NOINDEX=1 vite build",
+    "build:pages": "LEAF_BASE=/leaf/ LEAF_ORIGIN=https://chaxus.github.io LEAF_NOINDEX=1 vite build",
     "typecheck": "tsc --noEmit -p tsconfig.json"
   },
   "devDependencies": {

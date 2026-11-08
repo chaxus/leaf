@@ -10,7 +10,7 @@
  */
 import { createI18n, type I18nCore } from 'ranuts/i18n';
 
-export const BRAND = 'FlatPage';
+export const BRAND = 'Leaf';
 
 export const LOCALES = ['en', 'zh'] as const;
 export type Locale = (typeof LOCALES)[number];
@@ -242,7 +242,7 @@ export function detectLocale(): Locale {
   const docLang = document.documentElement.lang.toLowerCase();
   if (docLang.startsWith('zh')) return 'zh';
   if (docLang.startsWith('en')) return 'en';
-  const saved = localStorage.getItem('flatpage.lang');
+  const saved = localStorage.getItem('leaf.lang');
   if (isLocale(saved)) return saved;
   return navigator.language.toLowerCase().startsWith('zh') ? 'zh' : 'en';
 }

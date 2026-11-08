@@ -3,7 +3,7 @@
  *
  * vendor/opencv/opencv.js 是编译产物（emscripten + UMD→ESM 补丁），没有类型。
  * 这里只声明本项目实际用到的那部分。cv 上的函数用索引签名兜底：白名单
- * (tools/opencv_js.flatpage.config.py) 才是真正的事实来源，在这里重复一遍
+ * (tools/opencv_js.leaf.config.py) 才是真正的事实来源，在这里重复一遍
  * 反而会漂移。
  */
 

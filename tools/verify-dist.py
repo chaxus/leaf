@@ -8,7 +8,7 @@
 
 用法:
     python3 tools/verify-dist.py [dist 目录] [base 前缀]
-    python3 tools/verify-dist.py dist /flatpage/
+    python3 tools/verify-dist.py dist /leaf/
 """
 import re
 import sys

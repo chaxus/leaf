@@ -12,7 +12,7 @@ src/
 tools/
   dewarp.py                    Python reference implementation of the pipeline.
   build-opencv.sh              Compiles the slim OpenCV wasm.
-  opencv_js.flatpage.config.py Whitelist of OpenCV functions to expose.
+  opencv_js.leaf.config.py Whitelist of OpenCV functions to expose.
   patch-opencv-umd.py          UMD -> ESM, export factory not result.
   measure-residual.py          The quality regression check.
 vendor/opencv/  Committed build output. Do not edit by hand.
@@ -65,7 +65,7 @@ Rollup's commonjs plugin hides this in the production build only.
 ### Adding an OpenCV call
 
 Adding a `cv.something()` to `src/pipeline.js` requires adding it to
-`tools/opencv_js.flatpage.config.py` and rebuilding. Otherwise it is missing at
+`tools/opencv_js.leaf.config.py` and rebuilding. Otherwise it is missing at
 runtime, not at build time — the failure surfaces as a rejected worker promise
 and a toast, with nothing in the main-thread console.
 
@@ -85,20 +85,20 @@ it; in dev it stays a button and swaps text in place.
 
 ## Deployment targets
 
-`FLATPAGE_BASE` and `FLATPAGE_ORIGIN` drive every absolute path — asset URLs,
+`LEAF_BASE` and `LEAF_ORIGIN` drive every absolute path — asset URLs,
 canonical, hreflang, JSON-LD, the language-switch link and the sitemap.
 
 ```bash
-npm run build                                   # root path, flat.bybrowser.com
-npm run build:pages                             # /flatpage/, github.io
+npm run build                                   # root path, leaf.chaxus.com
+npm run build:pages                             # /leaf/, github.io
 ```
 
 A project site on GitHub Pages is served from `/<repo>/`. Building without
-`FLATPAGE_BASE` and deploying there gives you a page whose every asset 404s and
+`LEAF_BASE` and deploying there gives you a page whose every asset 404s and
 whose canonical points somewhere else entirely.
 
 ```bash
-npm run verify -- /flatpage/
+npm run verify -- /leaf/
 ```
 
 `tools/verify-dist.py` is the single implementation of that check, called by CI
